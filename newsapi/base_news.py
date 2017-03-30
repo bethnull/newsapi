@@ -1,11 +1,6 @@
 import requests
 
-
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self
-
+from attrdict import AttrDict
 
 class BaseNews(object):
     def __init__(self, API_KEY):
