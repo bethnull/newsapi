@@ -1,10 +1,8 @@
 from newsapi.base_news import BaseNews
 
-
 class Sources(BaseNews):
     def __init__(self, API_KEY):
         super(Sources, self).__init__(API_KEY)
-        self.endpoint = "https://newsapi.org/v1/sources"
         self.sources = []
         self.sources_base_info = {}
         self.sources_id_info = {}
@@ -12,20 +10,16 @@ class Sources(BaseNews):
         self.languages = {}
         self.countries = {}
 
+    @property
+    def endpoint(self):
+        return "https://newsapi.org/v1/sources"
+
     def get(self, category="", language="", country="", attributes_format=True):
         self.payload['category'] = category
         self.payload['language'] = language
         self.payload['country'] = country
-        r = self.requests.get(self.endpoint, params=self.payload)
-        if r.status_code != 200:
-            raise BaseException("Either server didn't respond or has resulted in zero results.")
-        try:
-            content = r.json()
-        except ValueError:
-            raise ValueError("No json data could be retrieved.")
-        if attributes_format:
-            return self.AttrDict(content)
-        return content
+
+        return super(Sources, self).get(attributes_format)
 
     def all(self):
         return self.get()
